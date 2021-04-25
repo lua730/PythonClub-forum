@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for item in theme_message%}
+<div class="col-md6 border">
+<h1>{{item.title}}</h1>
+{{item.user.name}}, {{item.created_date}}
+    <h4>{{item.content}}</h4>
+
+{% if current_user.is_authenticated and current_user == item.user %}
+        <a href="/theme_edit/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/theme_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    {% endif %}
+{% endfor %}
+
+<hr>
+
+Ответы: <br>
+
+{% for item in messages%}
+<div class="col-md6 border rounded">
+    <div>
+        <h4>{{item.content}}</h4>
+    </div>
+    <div>
+        {{item.user.name}}, {{item.created_date}}
+    </div>
+            {% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/theme/{{ item.theme_id }}/message/{{ item.id }}/edit_message" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/theme/{{ item.theme_id }}/message/{{ item.id }}/delete_message" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.title }}<br>
+        {{ form.content.label }}<br>
+        {{ form.content(class="form-control") }}<br>
+        {% for error in form.content.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
+
+{% endblock %}

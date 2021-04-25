@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Создание приглашения</h1>
+
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {% if current_user.available_invites > 0 or current_user.available_invites == -777 %}
+    <p>
+        {{ form.invite.label }}<br>
+        {{ form.invite(class="form-control") }}<br>
+        {% for error in form.invite.errors %}
+            <p invite="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    {% endif %}
+    <h3>Вы можете еще создать приглашений: {{available_invites}}</h3>
+    {% if current_user.available_invites > 0 or current_user.available_invites == -777 %}
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {% endif %}
+    {{message}}
+</form>
+{% endblock %}
